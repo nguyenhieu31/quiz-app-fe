@@ -113,7 +113,7 @@ const QuestionStyles = styled.div`
           background-color: #0d820d;
         }
         & > .item-answer.incorrect > .box {
-          background-color: #8e0e00;
+          background-color: #d01624;
         }
       }
       & > .btn-submit-answer {
@@ -127,7 +127,7 @@ const QuestionStyles = styled.div`
               : "no-drop"};
           background-color: ${(props) =>
             props.activeIndex || props.activeIndex === 0
-              ? "#8e0e00"
+              ? "#d01624"
               : "#cccccca8"};
           border-radius: 2rem;
           & > span {
@@ -137,7 +137,7 @@ const QuestionStyles = styled.div`
           }
         }
         & > .answered {
-          background-color: #8e0e00;
+          background-color: #d01624;
           cursor: pointer;
         }
       }
@@ -161,7 +161,7 @@ const QuestionStyles = styled.div`
 const QuestionUi = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { questions, answers, loading, answerIncorrect, review } = useSelector(
+  const { questions, answers, answerIncorrect, review } = useSelector(
     (state) => state.question
   );
   const [activeIndex, setActiveIndex] = useState(null);
@@ -173,6 +173,7 @@ const QuestionUi = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [openCircle, setOpenCircle] = useState(false);
   useEffect(() => {
     dispatch(getAllQuestion());
   }, [dispatch]);
@@ -219,8 +220,9 @@ const QuestionUi = () => {
       };
       dispatch(submitAnswer(data));
     }
-
+    setOpenCircle(true);
     setTimeout(() => {
+      setOpenCircle(false);
       setActiveQuestion(0);
       setActiveIndex(null);
       navigate("/home/statistical");
@@ -233,7 +235,7 @@ const QuestionUi = () => {
   };
   return (
     <>
-      {loading ? (
+      {openCircle ? (
         <div
           style={{
             width: "100%",
@@ -292,7 +294,7 @@ const QuestionUi = () => {
                         padding: "10px",
                         cursor: "pointer",
                         borderRadius: "1rem",
-                        backgroundColor: "#8e0e00",
+                        backgroundColor: "#d01624",
                         color: "#ffffff",
                       }}
                       onClick={handleClickExit}

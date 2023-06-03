@@ -2,7 +2,9 @@ import styled from "styled-components";
 import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getAllQuestion } from "../../redux/question/question";
+import { getAllQuestion, accessHome } from "../../redux/question/question";
+import { useEffect, useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 const HomeStyles = styled.div`
   display: flex;
   align-items: center;
@@ -39,23 +41,47 @@ const HomeStyles = styled.div`
 const HomeUi = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [openLoading, setOpenLoading] = useState(false);
   const HandleClickStartQuiz = () => {
     dispatch(getAllQuestion());
-    navigate("/home/question");
+    setOpenLoading(true);
+    setTimeout(() => {
+      setOpenLoading(false);
+      navigate("/home/question");
+    }, 1500);
   };
+  useEffect(() => {
+    dispatch(accessHome());
+  }, [dispatch]);
   return (
-    <HomeStyles className="home">
-      <div className="container">
-        <div className="logo">
-          <QuizRoundedIcon />
+    <>
+      {openLoading ? (
+        <div
+          style={{
+            width: "100%",
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress style={{ color: "#ffffff" }} />
         </div>
-        <div className="start-quiz">
-          <button className="btn-start" onClick={HandleClickStartQuiz}>
-            <span>Start Quiz!</span>
-          </button>
-        </div>
-      </div>
-    </HomeStyles>
+      ) : (
+        <HomeStyles className="home">
+          <div className="container">
+            <div className="logo">
+              <QuizRoundedIcon />
+            </div>
+            <div className="start-quiz">
+              <button className="btn-start" onClick={HandleClickStartQuiz}>
+                <span>Start Quiz!</span>
+              </button>
+            </div>
+          </div>
+        </HomeStyles>
+      )}
+    </>
   );
 };
 export default HomeUi;

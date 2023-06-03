@@ -2,6 +2,26 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import waiting from "../waiting/waiting";
 const API_URL = process.env.REACT_APP_API_URL;
+export const accessHome = createAsyncThunk(
+  //action type string
+  "question/accessHome",
+  // callback function
+  async (data) => {
+    const url = `${API_URL}/home`;
+    try {
+      const res = await axios.get(url);
+      localStorage.clear("userAnswer");
+      if (res.status === 200) {
+        return;
+      }
+    } catch (err) {
+      if (err && err.res.status === 401) {
+        console.log(err);
+        return;
+      }
+    }
+  }
+);
 export const getAllQuestion = createAsyncThunk(
   //action type string
   "question/getAllQuestion",
@@ -116,6 +136,9 @@ const questionSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(accessHome.pending, (state, action) => {
+        state.loading = true;
+      })
       .addCase(getAllQuestion.pending, (state, action) => {
         state.loading = true;
       })
@@ -131,6 +154,15 @@ const questionSlice = createSlice({
       })
       .addCase(clearData.pending, (state, action) => {
         state.loading = true;
+      })
+
+      .addCase(accessHome.fulfilled, (state, action) => {
+        state.loading = false;
+        state.review = false;
+        state.score = 0;
+        state.time = 0;
+        state.answers = [];
+        state.answerIncorrect = [];
       })
       .addCase(getAllQuestion.fulfilled, (state, action) => {
         state.loading = false;
@@ -183,6 +215,10 @@ const questionSlice = createSlice({
         state.time = 0;
         state.answers = [];
         state.answerIncorrect = [];
+      })
+      .addCase(accessHome.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload.message;
       })
       .addCase(getAllQuestion.rejected, (state, action) => {
         state.loading = false;

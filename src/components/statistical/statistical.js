@@ -49,13 +49,13 @@ const StatisticalStyles = styled.div`
           background-color: #03008e;
         }
         & > .btn-play-again {
-          background-color: #8e0e00;
+          background-color: #d01624;
         }
         & > .btn-review:hover {
           background-color: #03008edb;
         }
         & > .btn-play-again:hover {
-          background-color: #8e0e00cc;
+          background-color: #d01624cc;
         }
       }
       & > .btn-exits {
@@ -68,14 +68,14 @@ const StatisticalStyles = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #b01c0c;
+        background-color: #d01624;
         cursor: pointer;
         color: #ffffff;
         transition: all 0.25s ease-in-out;
       }
       & > .btn-exits:hover {
         background-color: #ffffff;
-        color: #b01c0c;
+        color: #d01624;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
       }
     }
