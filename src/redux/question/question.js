@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import waiting from "../waiting/waiting";
+const API_URL = process.env.REACT_APP_API_URL;
 export const getAllQuestion = createAsyncThunk(
   //action type string
   "question/getAllQuestion",
   // callback function
   async (data) => {
-    const url = `http://localhost:8080/api/v1/question`;
+    const url = `${API_URL}/question`;
     try {
       await waiting(1000);
       const res = await axios.get(url);
@@ -26,7 +27,7 @@ export const sendAnswer = createAsyncThunk(
   "question/sendAnswer",
   // callback function
   async (data) => {
-    const url = `http://localhost:8080/api/v1/save-answer`;
+    const url = `${API_URL}/save-answer`;
     try {
       await waiting(1500);
       const res = await axios.post(url, data);
@@ -45,7 +46,7 @@ export const submitAnswer = createAsyncThunk(
   "question/submitAnswer",
   // callback function
   async (data) => {
-    const url = `http://localhost:8080/api/v1/submit-answer`;
+    const url = `${API_URL}/submit-answer`;
     try {
       await waiting(1500);
       const res = await axios.post(url, data);
@@ -66,7 +67,7 @@ export const getResultStatistical = createAsyncThunk(
   "question/getResultStatistical",
   // callback function
   async (data) => {
-    const url = `http://localhost:8080/api/v1/statistical`;
+    const url = `${API_URL}/statistical`;
     try {
       const res = await axios.get(url);
       if (res.status === 200) {
@@ -85,7 +86,7 @@ export const clearData = createAsyncThunk(
   "question/clearData",
   // callback function
   async (data) => {
-    const url = `http://localhost:8080/api/v1/clear-data`;
+    const url = `${API_URL}/clear-data`;
     try {
       await waiting(1500);
       const res = await axios.get(url);
