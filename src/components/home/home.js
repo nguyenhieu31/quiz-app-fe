@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import QuizRoundedIcon from "@mui/icons-material/QuizRounded";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllQuestion, accessHome } from "../../redux/question/question";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -53,6 +53,7 @@ const HomeUi = () => {
   useEffect(() => {
     dispatch(accessHome());
   }, [dispatch]);
+  const { loading } = useSelector((state) => state.question);
   return (
     <>
       {openLoading ? (
@@ -68,18 +69,34 @@ const HomeUi = () => {
           <CircularProgress style={{ color: "#ffffff" }} />
         </div>
       ) : (
-        <HomeStyles className="home">
-          <div className="container">
-            <div className="logo">
-              <QuizRoundedIcon />
+        <>
+          {loading ? (
+            <div
+              style={{
+                width: "100%",
+                height: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <CircularProgress style={{ color: "#ffffff" }} />
             </div>
-            <div className="start-quiz">
-              <button className="btn-start" onClick={HandleClickStartQuiz}>
-                <span>Start Quiz!</span>
-              </button>
-            </div>
-          </div>
-        </HomeStyles>
+          ) : (
+            <HomeStyles className="home">
+              <div className="container">
+                <div className="logo">
+                  <QuizRoundedIcon />
+                </div>
+                <div className="start-quiz">
+                  <button className="btn-start" onClick={HandleClickStartQuiz}>
+                    <span>Start Quiz!</span>
+                  </button>
+                </div>
+              </div>
+            </HomeStyles>
+          )}
+        </>
       )}
     </>
   );
